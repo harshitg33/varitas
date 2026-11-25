@@ -1,0 +1,19 @@
+{
+  "name": "veritas-ai",
+  "version": "1.0.0",
+  "description": "Multi-agent research platform that turns a question into a source-cited report.",
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.70.0",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.0"
+  }
+}

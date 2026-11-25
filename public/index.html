@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Veritas — Research beyond answers</title>
+  <meta name="description" content="Ask a question. A team of AI agents plans, searches, analyzes, fact-checks and writes a report with every claim cited.">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<nav class="nav" aria-label="Main">
+  <div class="nav-in">
+    <a class="brand" href="#" id="brand">Veritas</a>
+    <div class="nav-links">
+      <a href="#agents" id="navAgents">Agents</a>
+      <a href="#process" id="navProcess">How it works</a>
+    </div>
+    <button class="btn-pill" id="newBtn" hidden>New research</button>
+  </div>
+</nav>
+
+<main>
+
+  <!-- HOME -->
+  <section class="view active" id="view-home">
+    <div class="hero">
+      <h1>Research,<br>beyond answers.</h1>
+      <p class="lede">Ask a question. A team of agents plans the work, reads the web, checks the facts, and writes a report where every claim points to its source.</p>
+
+      <form class="ask" id="askForm">
+        <label class="sr" for="query">Research question</label>
+        <textarea id="query" rows="2" placeholder="What do you want to understand?" maxlength="600" required></textarea>
+        <div class="ask-bar">
+          <span class="hint" id="modeHint"></span>
+          <button class="btn" type="submit" id="askBtn">Plan research</button>
+        </div>
+      </form>
+
+      <div class="examples" id="examples">
+        <button type="button">How effective are four-day work weeks?</button>
+        <button type="button">What is the state of solid-state batteries?</button>
+        <button type="button">Does intermittent fasting improve longevity?</button>
+      </div>
+    </div>
+
+    <section class="band" id="agents">
+      <h2>Five specialists.<br>One careful report.</h2>
+      <div class="bento">
+        <article class="tile tile-wide">
+          <h3>Orchestrator</h3>
+          <p>Breaks your question into focused subtasks and shows you the plan first. Edit it, remove steps, or add your own before anything runs.</p>
+          <div class="mini-plan" aria-hidden="true">
+            <span></span><span></span><span></span><span></span>
+          </div>
+        </article>
+        <article class="tile">
+          <h3>Research</h3>
+          <p>Searches the web in parallel and extracts what each source actually says.</p>
+        </article>
+        <article class="tile">
+          <h3>Analysis</h3>
+          <p>Finds patterns across sources and points out where they disagree.</p>
+        </article>
+        <article class="tile">
+          <h3>Fact-checking</h3>
+          <p>Tests the key claims against the retrieved evidence and marks each one supported, partial, or not.</p>
+        </article>
+        <article class="tile tile-dark tile-wide">
+          <h3>Writer</h3>
+          <p>Turns verified findings into a structured report with numbered citations. You review it, approve it, and export it as PDF or Markdown.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="band band-quiet" id="process">
+      <h2>You stay in control.</h2>
+      <ol class="steps">
+        <li><strong>Review the plan.</strong><span>Nothing is searched until you approve the subtasks.</span></li>
+        <li><strong>Watch it work.</strong><span>Follow each agent as it moves through your question.</span></li>
+        <li><strong>Read with receipts.</strong><span>Every claim carries a number that links to its source.</span></li>
+        <li><strong>Approve and export.</strong><span>Download a clean PDF or Markdown file when you are happy.</span></li>
+      </ol>
+    </section>
+
+    <footer class="foot">Veritas checks claims against the sources it retrieves. It can still be wrong, so open the sources for anything important.</footer>
+  </section>
+
+  <!-- PLAN -->
+  <section class="view" id="view-plan">
+    <div class="page">
+      <h1 class="page-title">Here's the plan.</h1>
+      <p class="page-sub" id="planQuery"></p>
+      <div class="plan-list" id="planList"></div>
+      <div class="actions">
+        <button class="btn-ghost" id="addTask" type="button">Add a subtask</button>
+        <button class="btn" id="approvePlan" type="button">Approve plan and start</button>
+      </div>
+      <p class="error" id="planError" role="alert" hidden></p>
+    </div>
+  </section>
+
+  <!-- RUN -->
+  <section class="view" id="view-run">
+    <div class="page narrow">
+      <h1 class="page-title">Working on it.</h1>
+      <p class="page-sub" id="runTitle"></p>
+      <ol class="pipeline" id="pipeline">
+        <li data-stage="research"><i></i><div><strong>Research</strong><span class="detail">Waiting</span><ul class="tasks" id="taskList"></ul></div></li>
+        <li data-stage="analysis"><i></i><div><strong>Analysis</strong><span class="detail">Waiting</span></div></li>
+        <li data-stage="factcheck"><i></i><div><strong>Fact-checking</strong><span class="detail">Waiting</span></div></li>
+        <li data-stage="writer"><i></i><div><strong>Writing</strong><span class="detail">Waiting</span></div></li>
+      </ol>
+      <p class="error" id="runError" role="alert" hidden></p>
+      <div class="actions" id="runErrorActions" hidden>
+        <button class="btn" id="retryRun" type="button">Try again</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- REPORT -->
+  <section class="view" id="view-report">
+    <div class="report-wrap">
+      <div class="review-bar" id="reviewBar">
+        <span>Review the report, then approve it to export.</span>
+        <button class="btn" id="approveReport" type="button">Approve report</button>
+      </div>
+      <div class="review-bar done" id="exportBar" hidden>
+        <span>Approved. Choose a format.</span>
+        <div>
+          <button class="btn" id="exportPdf" type="button">Download PDF</button>
+          <button class="btn-ghost" id="exportMd" type="button">Download Markdown</button>
+        </div>
+      </div>
+
+      <article class="report" id="report">
+        <h1 id="reportTitle"></h1>
+        <p class="report-meta" id="reportMeta"></p>
+        <div class="prose" id="reportBody"></div>
+
+        <section class="factbox" id="factbox">
+          <h2>Fact check</h2>
+          <div id="checkList"></div>
+        </section>
+
+        <section class="sources" id="sourceBox">
+          <h2>Sources</h2>
+          <ol id="sourceList"></ol>
+        </section>
+      </article>
+    </div>
+  </section>
+
+</main>
+
+<script src="app.js"></script>
+</body>
+</html>
